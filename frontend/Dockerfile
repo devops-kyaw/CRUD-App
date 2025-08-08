@@ -5,7 +5,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy only package files first (better caching)
-COPY package*.json ./
+COPY COPY frontend/package*.json ./
 
 # Install dependencies (frozen lockfile)
 RUN npm install
