@@ -3,7 +3,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./  # Copy package files first for better caching
 RUN npm ci             # Install all dependencies
-COPY . .               # Then copy source code
+COPY ./frontend .               # Then copy source code
 RUN npm run build      # Build the application
 
 # Stage 2: Production image with minimal footprint
