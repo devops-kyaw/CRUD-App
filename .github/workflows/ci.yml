@@ -20,7 +20,7 @@ jobs:
           path: ~/.npm # Cache npm’s global cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} # Key based on OS and package-lock.json
 
-      - name: Configure AWS (OIDC)
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::070238932258:role/GitHub_Actions_ECR_Role 
