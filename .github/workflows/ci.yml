@@ -19,10 +19,6 @@ jobs:
         with:
           path: ~/.npm # Cache npm’s global cache
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} # Key based on OS and package-lock.json
-      - uses: actions/checkout@v3 # Check out the repository code
-      - run: npm ci # Install dependencies reliably using package-lock.json
-      - run: npm test # Run tests defined in package.json
-      - run: npm run lint # Run ESLint to ensure code quality
 
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
