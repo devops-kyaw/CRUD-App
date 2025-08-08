@@ -7,5 +7,5 @@ variable "render_api_key" {
 variable "render_owner_id" {
   type        = string
   description = "render_owner_id"
-  default     = "usr-d29q75adbo4c739lao30"
+  default     = "tea-d29q752dbo4c739lao00"
 }
