@@ -43,7 +43,7 @@ jobs:
       - name: Build image (load to runner for scanning)
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./frontend
           tags: |
             ${{ steps.vars.outputs.image }}
           load: true           # makes the image available locally for Trivy
