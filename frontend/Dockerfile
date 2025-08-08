@@ -1,16 +1,31 @@
-# Stage 1: Build the application
+# ---------- Stage 1: Build ----------
 FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./  # Copy package files first for better caching
-RUN npm ci             # Install all dependencies
-COPY App.js .               # Then copy source code
-RUN npm run build      # Build the application
 
-# Stage 2: Production image with minimal footprint
-FROM node:18-alpine
+# Set working directory
 WORKDIR /app
-# Only copy built assets and production dependencies
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
-RUN npm ci --production  # Install only production dependencies
-CMD ["node", "dist/server.js"]  # Run the built application
+
+# Copy only package files first (better caching)
+COPY package*.json ./
+
+# Install dependencies (frozen lockfile)
+RUN npm ci
+
+# Copy application source code
+COPY . .
+
+# ---------- Stage 2: Production ----------
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy only the node_modules from builder
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copy the rest of the app files
+COPY --from=builder /app ./
+
+# Use JSON array form for CMD (recommended)
+CMD ["node", "App.js"]
+
+# Expose port (change if your app uses a different one)
+EXPOSE 3000
