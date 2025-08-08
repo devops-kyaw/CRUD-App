@@ -2,8 +2,8 @@
 terraform {
   required_providers {
     render = {
-      source  = "renderinc/render"  # Using Render's free tier
-      version = "0.1.0"             # Specify provider version for stability
+      source = "render-oss/render"
+      version = "1.7.1"
     }
   }
 }
