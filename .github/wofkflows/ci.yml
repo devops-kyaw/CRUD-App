@@ -1,5 +1,5 @@
 # CI workflow to build, test, and lint the CRUD app on push or pull request
-name: CI Pipeline
+name: CI Pipeline2
 on:
   push:
     branches: [main] # Trigger on pushes to main branch
