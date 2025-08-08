@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=builder /test/dist ./dist
 COPY --from=builder /test/package*.json ./
 RUN npm ci --production
-CMD ["node", "dist/App.js"]
+CMD ["node", "dist/server.js"]
