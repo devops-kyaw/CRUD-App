@@ -1,12 +1,15 @@
 # Define a web service on Render's free tier
-resource "render_service" "web_app" {
-  name = "ci-demo-app"                                 # Service name
-  type = "web_service"                                 # Type of service
-  repo = "https://github.com/kyawzawaungdevops/CRUD-App.git"  # Source repo
-  env = "docker"                                       # Use Docker environment
-  plan = "starter"                                     # Free tier plan
-  branch = "main"                                      # Deploy from main branch
-  build_command = "docker build -t app ."              # Build command
-  start_command = "docker run -p 3000:3000 app"        # Start command
-  auto_deploy = true                                   # Auto-deploy on commits
+resource "render_web_service" "web_app" {
+  name   = "ci-demo-app"
+  plan   = "starter"
+  region = "oregon"
+
+  runtime_source = {
+    docker_runtime = {
+      auto_deploy = true
+      branch      = "main"
+      repo_url    = "https://github.com/kyawzawaungdevops/CRUD-App.git"
+      # If your Dockerfile isn’t in repo root, add the correct path field accordingly.
+    }
+  }
 }
