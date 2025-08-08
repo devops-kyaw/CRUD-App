@@ -11,4 +11,5 @@ terraform {
 # Configure the Render provider with authentication
 provider "render" {
   api_key = var.render_api_key  # Store API key as a variable
+  owner_id = var.render_owner_id
 }
