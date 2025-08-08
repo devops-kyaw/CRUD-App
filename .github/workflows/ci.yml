@@ -5,6 +5,9 @@ on:
     branches: [main] # Trigger on pushes to main branch
   pull_request:
     branches: [main] # Trigger on PRs to main branch
+permissions:
+  id-token: write
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest # Use GitHub's free Linux runner
