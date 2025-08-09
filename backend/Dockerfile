@@ -1,21 +1,16 @@
-FROM node:18-slim
+# --- Production Node.js backend (plain JS) ---
+FROM node:18-alpine
 
-# add curl for healthcheck
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl tini && \
-    rm -rf /var/lib/apt/lists/*
+ENV NODE_ENV=production
+WORKDIR /app
 
-WORKDIR /usr/local/app
-
+# Install only production deps (fast, small image)
 COPY package*.json ./
+RUN if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
 
-RUN npm ci && \
- npm cache clean --force && \
- mv /usr/local/app/node_modules /node_modules
-
+# Copy app source
 COPY . .
 
-ENV PORT=80
-EXPOSE 80
-
-CMD ["node", "dist/index.js"]
+EXPOSE 3000
+# Your app reads DATABASE_URL at runtime
+CMD ["node", "index.js"]
