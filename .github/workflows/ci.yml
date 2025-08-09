@@ -31,7 +31,7 @@ jobs:
         run: npm test
 
   build_and_push:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:     
       - name: Configure AWS credentials
