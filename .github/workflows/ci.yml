@@ -30,7 +30,7 @@ jobs:
         working-directory: backend
         run: npm test
 
-  build_and_push:
+  build_scan_push:
     needs: test
     runs-on: ubuntu-latest
     steps:     
@@ -48,6 +48,47 @@ jobs:
         id: vars
         run: echo "image=${{ steps.ecr.outputs.registry }}/my-ecr-repo:${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
+      - name: Trivy filesystem scan (repo)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          format: json
+          output: trivy-fs-report.json
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          ignore-unfixed: true
+          exit-code: 0 
+      - name: Upload FS scan artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-fs-report
+          path: trivy-fs-report.json
+          retention-days: 30
+
+      # --- Trivy dependency scan (frontend only) ---
+      - name: Trivy dependency scan (frontend)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: frontend
+          scanners: vuln
+          vuln-type: library
+          dependency-tree: true
+          format: json
+          output: trivy-deps-report.json
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: 0   # set to 1 to enforce failure on HIGH/CRITICAL
+
+      - name: Upload dependency scan artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-deps-report
+          path: trivy-deps-report.json
+          retention-days: 30      
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - uses: actions/checkout@v3 # Check out the repository code
