@@ -47,7 +47,7 @@ jobs:
       - name: Compute image ref
         id: vars
         run: echo "image=${{ steps.ecr.outputs.registry }}/my-ecr-repo:${{ github.sha }}" >> "$GITHUB_OUTPUT"
-
+      - uses: actions/checkout@v3 # Check out the repository code
       - name: Trivy filesystem scan (repo)
         uses: aquasecurity/trivy-action@0.28.0
         with:
