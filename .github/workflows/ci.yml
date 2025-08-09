@@ -64,8 +64,8 @@ jobs:
       - name: Upload Vulnerability Scan Results
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-report
-          path: ./test.json
+          name: trivy-report.json
+          path: .
           retention-days: 30
 
 
